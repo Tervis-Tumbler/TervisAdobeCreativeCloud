@@ -3,7 +3,10 @@
         [ValidateSet("Active","Available")]$Status
     )
     if (-not $Script:CreativeCloudUsers) {
-        $Script:CreativeCloudUsers = Get-Content "\\tervis.prv\applications\powershell\TervisAdobeCreativeCloud\Team Export\team.csv" | 
+        $Script:CreativeCloudUsers = Get-ChildItem -File "\\tervis.prv\applications\powershell\TervisAdobeCreativeCloud\Team Export" | 
+        sort LastWriteTime -Descending | 
+        Select -First 1 |
+        Get-Content |
         select -Skip 1 | 
         Out-String |
         ConvertFrom-Csv -Delimiter "`t"
@@ -13,5 +16,10 @@
 }
 
 function Invoke-EmailCreativeCloudUserToConfirmTheyStillUse {
+
+}
+
+function Invoke-MakeCreativeCloudUsersLocalAdmin {
+    Get-CreativeCloudUsers -Status Active
 
 }
