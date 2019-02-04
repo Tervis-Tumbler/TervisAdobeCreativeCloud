@@ -7,19 +7,16 @@
         sort LastWriteTime -Descending | 
         Select -First 1 |
         Get-Content |
-        select -Skip 1 | 
-        Out-String |
-        ConvertFrom-Csv -Delimiter "`t"
+        ConvertFrom-Csv
     }
     $Script:CreativeCloudUsers |
     where {-Not $Status -or $_.Status -eq $Status}
 }
 
 function Invoke-EmailCreativeCloudUserToConfirmTheyStillUse {
-
+    $Script:CreativeCloudUsers.email -join ";"
 }
 
 function Invoke-MakeCreativeCloudUsersLocalAdmin {
     Get-CreativeCloudUsers -Status Active
-
 }
